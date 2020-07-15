@@ -13,8 +13,7 @@ let db_gisuRouter = require('./routes/db_gisu');
 let db_programRouter = require('./routes/db_program');
 let loginRouter = require('./routes/login');
 let registerRouter = require('./routes/register');
-var cookie = require('cookie');
-
+let logoutRouter = require('./routes/logout');
 var app = express();
 
 // view engine setup
@@ -35,6 +34,7 @@ app.use('/api/admin',adminRouter);
 app.use('/api/admin/db/gisu',db_gisuRouter);
 app.use('/api/admin/db/program', db_programRouter);
 
+app.use('/api/logout', logoutRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/register', registerRouter);
 
