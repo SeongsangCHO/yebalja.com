@@ -4,52 +4,125 @@ import Tab from "react-bootstrap/Tab"
 import Tabs from "react-bootstrap/Tabs"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
+import Hello from "./Hello"
+import Nav from 'react-bootstrap/Nav'
 
 export function QnA ({data}) {
-    return (
-        <>
-            <strong>{data.q}</strong>
-            <br />{data.a}
-            <br /><br />
-        </>
-    );
+	return (
+			<>
+					<strong>{data.q}</strong>
+					<br />{data.a}
+					<br /><br />
+			</>
+	);
 };
 
-export function FaqItem ({data}) {
-    return (
-        <Tab.Pane eventKey={data}>
-            {data.subCategory.qna.map((v, idx) => <QnA data={v} key={idx}/>)}
-        </Tab.Pane>
-    );
+export function FaqItem (data) {
+	return (
+			<Tab.Pane eventKey={data}>
+					{data.subCategory.qna.map((v, idx) => <QnA data={v} key={idx}/>)}
+			</Tab.Pane>
+	);
 };
 
-export function FaqTab ({data}) {
+export function FaqTab (title) {
+	const testData = title;
+	const type = ['home', ,'profile','contact'];
+	console.log('안녕하세요');
 	// date 넘어가면 status_end
 	return (
-        <Tab title={data.category}>
-            <Row className="justify-content-md-center">
-                <Tab.Container id="list-group-tabs-example" defaultActiveKey={data.subCategory.title}>
-                    <Col md={3}>
-                        <ListGroup className={styles.secondTab}>
-                            {data.subCategory.map((v, idx) => <ListGroup.Item action href={v.title} key={idx}>{v.title}</ListGroup.Item>)}
-                        </ListGroup>
-                    </Col>
-                    <Col md={9} className={styles.content}>
-                        <Tab.Content>
-                            {data.subCategory.map((v, idx) => <FaqItem subCategory={v} key={idx} />)}
-                        </Tab.Content>
-                    </Col>
-                </Tab.Container>
-            </Row>
-        </Tab>
+		<Tab eventKey="home" title={title}>
+
+		    {/* <Row className="justify-content-md-center">
+       		 <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1-1">
+       		     <Col md={3}>
+       		         <ListGroup className={styles.secondTab}>
+
+                     <ListGroup.Item action href="#link1-1">
+                         지원자격
+                     </ListGroup.Item>
+
+                     <ListGroup.Item action href="#link1-2">
+                         모집규모 및 분야
+                     </ListGroup.Item>
+
+                	   <ListGroup.Item action href="#link1-3">
+                	       선발과정
+                	   </ListGroup.Item>
+
+                  </ListGroup>
+              </Col>
+            <Col md={9} className={styles.content}>
+              <Tab.Content>
+                <Tab.Pane eventKey="#link1-1">
+                <strong>Q.웹이나 iOS가 아닌 다른 분야의 개발자로 경력이 있을 경우 지원이 가능한가요?</strong>
+                <br />A.분야에 관계없이 2년 이상의 현업 개발 경력을 가진 분은 지원이 불가능합니다.
+                <br /><br />
+                <strong>Q.최종 학력 또는 전공과 관계없이 지원이 가능한가요?</strong>
+                <br />A.네 가능합니다. 최종 학력이나 전공 여부와 관계없이 2020년 하반기에 풀타임으로 프로그램 참여가 가능한 분이라면 지원 가능합니다.
+                </Tab.Pane>
+                <Tab.Pane eventKey="#link1-2">
+                <strong>Q.웹 풀스택, 모바일 iOS 분야별 선발 인원이 정해져 있나요?</strong>
+                <br />A.아니요, 분야별로 인원을 정해두고 선발하지 않습니다.
+                <br /><br />
+                <strong>Q.지원할 때 반드시 웹 풀스택, 모바일 iOS 중 하나를 선택해야 하나요?</strong>
+                <br />A.네, 지원 시 두 분야 중 하나를 선택해야 합니다. 서로 다른 프로그래밍 언어를 사용하여 부스트캠프 기간 동안 충분한 연습이 필요하기 때문입니다.
+                </Tab.Pane>
+                <Tab.Pane eventKey="#link1-3">
+                <strong>Q.기타 증빙 자료는 구체적으로 어떤 것을 말하는 건가요?</strong>
+                <br />A.무언가에 온전히 몰입해 본 경험을 자유로운 형식으로 표현하여 제출하시면 됩니다. 반드시 프로그래밍과 관련된 경험일 필요는 없으며, 관심 있는 분야에서 끈기 있게 지속하거나 성취한 것을 입증할 수 있다면 무엇이든 괜찮습니다.
+                <br /><br />
+                <strong>Q.코딩테스트는 어떻게 진행되나요?</strong>
+                <br />A.코딩테스트는 온라인으로 진행합니다. 개인 노트북을 지참해야 하며, 사용 가능한 프로그래밍 언어는 C, C++, C#, Java, JavaScript, Kotlin, Python2, Python3, Swift입니다. 자세한 내용은 추후 서류 합격자에 한해 안내해 드릴 예정입니다.
+                <br /><br />
+                <strong>Q.면접은 따로 없나요?</strong>
+                <br />A.이번 부스트캠프는 별도의 면접 과정이 없습니다.
+              </Tab.Pane>
+          	</Tab.Content>
+          </Col>
+        </Tab.Container>
+      </Row> */}
+		</Tab>
+	)
+}
+
+export function TabContainer(id){
+	return(
+		<Tab.Container id="left-tabs-example" defaultActiveKey="#link1-1">
+			{console.log(id)}
+						<Row>
+							<Col sm={4}>
+								<ListGroup className={styles.secondTab}>
+									<ListGroup.Item action href="#link1-1">
+										지원자격123
+									</ListGroup.Item>
+									<ListGroup.Item action href="#link1-2">
+										모집규모 및 분야
+									</ListGroup.Item>
+								</ListGroup>
+							</Col>
+							<Col sm={8}>
+								<Tab.Content>
+									<Tab.Pane eventKey="#link1-1">
+										<span>내용이지</span>
+									</Tab.Pane>
+									<Tab.Pane eventKey="#link1-2">
+										<span>내용EASY</span>
+									</Tab.Pane>
+								</Tab.Content>
+							</Col>
+						</Row>
+					</Tab.Container>
 	)
 }
 
 export default function Faq() {
+//event key를 숫자로해서 map돌 때 idx로 해버리면?
 
+	const id = ['halo'];
     const dataList = [
         {
-            category: "지원/선발",
+			category: "지원/선발",
             subCategory: [
                 {
                     title: "지원자격",
@@ -92,6 +165,7 @@ export default function Faq() {
         },{
             category: "교육과정",
             subCategory: [
+
                 {
                     title: "교육내용",
                     qna: [
@@ -140,14 +214,77 @@ export default function Faq() {
                 },
             ],
         },
-    ]
-    console.log(dataList[0]);
+		]
+		const titleList = ['지원/선발', '교육과정', '기타'];
+		const type = ['home','profile','contact'];
     return (
-        <div className={styles.firstTab}>
-            <Tabs defaultActiveKey="home" transition={false} id="noanim-tab-example" className={styles.menu}>
-                {dataList.map((v, idx) => <FaqTab data={v} key={idx}/>)}
+		<div className={styles.firstTab}>
+			<Tabs defaultActiveKey="home" transition={false} id="noanim-tab-example">
+				<Tab eventKey="halo" title="halo">
+					<TabContainer />
+				</Tab>
+				<Tab eventKey="home" title="Home">
+					<Tab.Container id="left-tabs-example" defaultActiveKey="#link1-1">
+						<Row>
+							<Col sm={4}>
+								<ListGroup className={styles.secondTab}>
+									<ListGroup.Item action href="#link1-1">
+										지원자격
+									</ListGroup.Item>
+									<ListGroup.Item action href="#link1-2">
+										모집규모 및 분야
+									</ListGroup.Item>
+								</ListGroup>
+							</Col>
+							<Col sm={8}>
+								<Tab.Content>
+									<Tab.Pane eventKey="#link1-1">
+										<span>link1</span>
+									</Tab.Pane>
+									<Tab.Pane eventKey="#link1-2">
+										<span>link1</span>
+									</Tab.Pane>
+								</Tab.Content>
+							</Col>
+						</Row>
+					</Tab.Container>
+				</Tab>
 
-                {/* <Tab eventKey="home" title="지원/선발">
+				<Tab eventKey="second" title="home">
+					<span>Hi</span>
+					<Tab.Container id="left-tabs-example" defaultActiveKey="#link2-1">
+						<Row>
+							<Col sm={4}>
+								<ListGroup className={styles.secondTab}>
+									<ListGroup.Item action href="#link2-1">
+										두번째탭
+									</ListGroup.Item>
+									<ListGroup.Item action href="#link2-2">
+										두번째에서 2번째
+									</ListGroup.Item>
+								</ListGroup>
+							</Col>
+							<Col sm={8}>
+								<Tab.Content>
+									<Tab.Pane eventKey="#link2-1">
+										<span>두번스</span>
+									</Tab.Pane>
+									<Tab.Pane eventKey="#link2-2">
+										<span>두번스스</span>
+									</Tab.Pane>
+								</Tab.Content>
+							</Col>
+						</Row>
+					</Tab.Container>
+				</Tab>
+			</Tabs>
+			{/* {titleList.map((v, idx) => <FaqTab title={v} key={idx} eventKey={type[idx]} />)}
+				<Hello /> */}
+				{/* {dataList.map((v, idx) => <FaqTab title={v} key={idx} />)} */}
+					{/* {titleList.map((v, idx) => <FaqTab title={v} key={idx} eventKey={type[idx]} />)} */}
+               
+				 {/* <
+				  eventKey="home" title="지원/선발">
                     <Row className="justify-content-md-center">
                         <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1-1">
                             <Col md={3}>
@@ -170,8 +307,6 @@ export default function Faq() {
                             <Col md={9} className={styles.content}>
                                 <Tab.Content>
                                     <Tab.Pane eventKey="#link1-1">
-                                    {dataList.map((v, idx) => <QnA data={v} key={idx}/>)}
-                                    {data.date_title}
                                     <strong>Q.웹이나 iOS가 아닌 다른 분야의 개발자로 경력이 있을 경우 지원이 가능한가요?</strong>
                                     <br />A.분야에 관계없이 2년 이상의 현업 개발 경력을 가진 분은 지원이 불가능합니다.
                                     <br /><br />
@@ -199,9 +334,9 @@ export default function Faq() {
                             </Col>
                         </Tab.Container>
                     </Row>
-                </Tab> */}
+                </Tab>  */}
 
-                {/* <Tab eventKey="profile" title="교육과정">
+                 {/* <Tab eventKey="profile" title="교육과정">
                     <Row className="justify-content-md-center">
                         <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link2-1">
                             <Col md={3}>
@@ -243,7 +378,7 @@ export default function Faq() {
                             </Col>
                         </Tab.Container>
                     </Row>
-                </Tab> */}
+                </Tab>  */}
 
                 {/* <Tab eventKey="contact" title="기타">
                     <Row className="justify-content-md-center">
@@ -272,9 +407,8 @@ export default function Faq() {
                             </Col>
                         </Tab.Container>
                     </Row>
-                </Tab>
-                 */}
-            </Tabs>
-        </div>
+                </Tab> */}
+    </div>
   );
 }
+
