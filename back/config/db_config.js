@@ -6,7 +6,7 @@ const connection = mysql.createConnection({
   port: 3306,
   user: 'secho',
   password: process.env.DB_PASSWORD,
-  database: 'yebalja_db'
+  database: 'yebalja_db2'
 })
 connection.connect((err)=>{
   if (err) throw err;
