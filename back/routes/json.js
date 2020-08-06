@@ -53,9 +53,9 @@ router.get('/reviews', function(req, res, next){
       //program의 키값을 갖는 객체에 v객체 할당.
       delete v['program'];
       //program의 키는 사용하지 않으므로 삭제함.
-      })
-    console.log(obj)
-     res.json(result);
+    })
+    console.log(obj);
+     res.json(obj);
   })
 })
 
@@ -68,23 +68,28 @@ router.get('/qnas', function(req, res, next){
   db.query(sql, (error, result) => {
     if(error) throw error;
     let obj = {};
+    let valueObj = {};
+    let categoryObj = {};
     let qnas = [];
     result.map(v => {
       if (!(v.program in obj))
+      {
         obj[v.program] = [];
-      console.log(v.category);
+        valueObj[v.program] = [];
+      }
+        // if (!(v.category in obj))
+      obj[v.program].push(v);
+      valueObj[v.program].push(v);
      // db.query('select title, eventkey from categories', (error, result)=>{console.log(result);})
       // if(!(v.category in obj))
       //   obj[v.program].subCategory = [];    //각 프로그램마다 3개의 객체 = 중복없이 객체 생성(카테고리값)
-    console.log(obj[v.program]);
-    if(!(v.category in obj[v.program]))
-      obj[v.program].category = v.category;
     //3개의 객체마다 서브카테고리안에 여러  title,href, qna를 가짐
     //qna속에 여러 q,a
      delete v['program'];
     })
-    console.log(obj);
-    res.json(result);
+
+    console.log(valueObj.ftseoul[1].category);
+    res.json(obj);
   })
 })
 module.exports = router;
