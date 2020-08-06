@@ -13,7 +13,7 @@ router.get('/gisu', function(req, res, next) {
 });
 
 router.get('/program', function(req, res, next){
-  db.query('SELECT * FROM program_table', (error, result)=>{
+  db.query('SELECT * FROM programs', (error, result)=>{
     if (error) throw error;
     res.json(result);
   })
@@ -28,6 +28,26 @@ router.get('/faq', function(req, res, next){
     if(error) throw error;
     console.log(result[0]);
     res.json(result);
+  })
+})
+
+
+router.get('/reviews', function(req, res, next){
+
+  let sql;
+
+  sql ='select programs.title as program,  reviews.link,  reviews.title,  reviews.content,  reviews.post_date  from reviews  inner join programs on reviews.programs_id = programs.id';
+  db.query(sql, (error, result) => {
+    if (error) throw error;
+    let obj = {};
+    result.map(v => { 
+     if (!(v.program in obj))
+        obj[v.program] = [];        
+      obj[v.program].push(v);
+      delete v['program'];
+      })
+    console.log(obj)
+     res.json(result);
   })
 })
 module.exports = router;
