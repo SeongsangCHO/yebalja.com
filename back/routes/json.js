@@ -32,22 +32,59 @@ router.get('/faq', function(req, res, next){
 })
 
 
+
+// reviews 컴포넌트에 들어갈 데이터 JSON형식으로 변환
+
 router.get('/reviews', function(req, res, next){
 
   let sql;
 
-  sql ='select programs.title as program,  reviews.link,  reviews.title,  reviews.content,  reviews.post_date  from reviews  inner join programs on reviews.programs_id = programs.id';
+  sql ="select replace(programs.link, '/', '') as program,  reviews.link,  reviews.title,  reviews.content,  reviews.post_date  from reviews  inner join programs on reviews.programs_id = programs.id";
   db.query(sql, (error, result) => {
     if (error) throw error;
     let obj = {};
+    //데이터를 담을 객체 obj 생성
     result.map(v => { 
+      //쿼리문 결과가 객체 배열, 이를 반복함.
      if (!(v.program in obj))
         obj[v.program] = [];        
+        //객체에서 program이라는 키가 obj에 존재하지 않으면, 해당 키값에 대한 배열 생성
       obj[v.program].push(v);
+      //program의 키값을 갖는 객체에 v객체 할당.
       delete v['program'];
+      //program의 키는 사용하지 않으므로 삭제함.
       })
     console.log(obj)
      res.json(result);
+  })
+})
+
+
+router.get('/qnas', function(req, res, next){
+  let sql;
+
+  sql = "select replace(programs.link, '/', '') as program,  categories.title as category,  categories.eventkey as eventKey,  subcategories.title as title,  subcategories.link as href, qnas.q , qnas.a from programs  inner join categories on programs.id = categories.programs_id inner join subcategories on categories.id = subcategories.categories_id  inner join qnas on qnas.subcategories_id = subcategories.id";
+
+  db.query(sql, (error, result) => {
+    if(error) throw error;
+    let obj = {};
+    let qnas = [];
+    result.map(v => {
+      if (!(v.program in obj))
+        obj[v.program] = [];
+      console.log(v.category);
+     // db.query('select title, eventkey from categories', (error, result)=>{console.log(result);})
+      // if(!(v.category in obj))
+      //   obj[v.program].subCategory = [];    //각 프로그램마다 3개의 객체 = 중복없이 객체 생성(카테고리값)
+    console.log(obj[v.program]);
+    if(!(v.category in obj[v.program]))
+      obj[v.program].category = v.category;
+    //3개의 객체마다 서브카테고리안에 여러  title,href, qna를 가짐
+    //qna속에 여러 q,a
+     delete v['program'];
+    })
+    console.log(obj);
+    res.json(result);
   })
 })
 module.exports = router;
