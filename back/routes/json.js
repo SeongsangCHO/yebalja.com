@@ -59,6 +59,9 @@ router.get('/reviews', function(req, res, next){
   })
 })
 
+const reduceDouble = function(arr){
+  return categoryArray = arr.filter((item, index) => arr.indexOf(item) === index);
+}
 
 router.get('/qnas', function(req, res, next){
   let sql;
@@ -81,20 +84,25 @@ router.get('/qnas', function(req, res, next){
         obj[v.program] = [];
       }
     categoryTemp.push(v.category);
-    eventkeyTemp.push(v.evnetKey);
+    eventkeyTemp.push(v.eventKey);
     //  obj[v.program].push(v);
     console.log(obj);
      delete v['program'];
     })
     //카테고리의 중복요소 제거
-    let categoryArray = categoryTemp.filter((item, index) => categoryTemp.indexOf(item) === index);
+    categoryArray = reduceDouble(categoryTemp);
+    //let categoryArray = categoryTemp.filter((item, index) => categoryTemp.indexOf(item) === index);
     let eventkeyArray = eventkeyTemp.filter((item, index) => eventkeyTemp.indexOf(item) === index);
 
     console.log(categoryArray);
     let programTitle = Object.keys(obj);
     programTitle.forEach(function(o){
-      categoryArray.forEach(function(key){
-        obj[o].push({category : key});
+      categoryArray.forEach(function(key, idx){
+        obj[o].push({category : key,
+        eventKey : eventkeyArray[idx],
+        subCategory : []
+       }
+      );
        // obj[o].category = key;
       });
       // eventkeyArray.forEach(function(key){
