@@ -62,33 +62,36 @@ router.get('/reviews', function(req, res, next){
 
 router.get('/qnas', function(req, res, next){
   let sql;
-
+  let getCategory = 'select distinct title as category from categories';
   sql = "select replace(programs.link, '/', '') as program,  categories.title as category,  categories.eventkey as eventKey,  subcategories.title as title,  subcategories.link as href, qnas.q , qnas.a from programs  inner join categories on programs.id = categories.programs_id inner join subcategories on categories.id = subcategories.categories_id  inner join qnas on qnas.subcategories_id = subcategories.id";
+  // let category = [];
+  // db.query(getCategory, (error, result) => {
+  //   if(error) throw error;
+  //   console.log(result);
 
+  // })
   db.query(sql, (error, result) => {
     if(error) throw error;
     let obj = {};
-    let valueObj = {};
-    let categoryObj = {};
+    console.log(result[10].category);
     let qnas = [];
     result.map(v => {
       if (!(v.program in obj))
       {
         obj[v.program] = [];
-        valueObj[v.program] = [];
       }
         // if (!(v.category in obj))
       obj[v.program].push(v);
-      valueObj[v.program].push(v);
-     // db.query('select title, eventkey from categories', (error, result)=>{console.log(result);})
-      // if(!(v.category in obj))
       //   obj[v.program].subCategory = [];    //각 프로그램마다 3개의 객체 = 중복없이 객체 생성(카테고리값)
     //3개의 객체마다 서브카테고리안에 여러  title,href, qna를 가짐
     //qna속에 여러 q,a
      delete v['program'];
     })
-
-    console.log(valueObj.ftseoul[1].category);
+    //program title 키 값을 이용해서 반복문 돌리기
+    let programTitle = Object.keys(obj);
+    programTitle.forEach(function(o){
+      console.log(obj[o]);
+    })
     res.json(obj);
   })
 })
