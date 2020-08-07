@@ -73,25 +73,43 @@ router.get('/qnas', function(req, res, next){
   db.query(sql, (error, result) => {
     if(error) throw error;
     let obj = {};
-    console.log(result[10].category);
-    let qnas = [];
+    let categoryTemp = [];
+    let eventkeyTemp = [];
     result.map(v => {
       if (!(v.program in obj))
       {
         obj[v.program] = [];
       }
-        // if (!(v.category in obj))
-      obj[v.program].push(v);
-      //   obj[v.program].subCategory = [];    //각 프로그램마다 3개의 객체 = 중복없이 객체 생성(카테고리값)
-    //3개의 객체마다 서브카테고리안에 여러  title,href, qna를 가짐
-    //qna속에 여러 q,a
+    categoryTemp.push(v.category);
+    eventkeyTemp.push(v.evnetKey);
+    //  obj[v.program].push(v);
+    console.log(obj);
      delete v['program'];
     })
-    //program title 키 값을 이용해서 반복문 돌리기
+    //카테고리의 중복요소 제거
+    let categoryArray = categoryTemp.filter((item, index) => categoryTemp.indexOf(item) === index);
+    let eventkeyArray = eventkeyTemp.filter((item, index) => eventkeyTemp.indexOf(item) === index);
+
+    console.log(categoryArray);
     let programTitle = Object.keys(obj);
     programTitle.forEach(function(o){
+      categoryArray.forEach(function(key){
+        obj[o].push({category : key});
+       // obj[o].category = key;
+      });
+      // eventkeyArray.forEach(function(key){
+      //   obj[o].push({evnetKey : key})
+      // })
+      //obj[o]에 각각 3개의 키를 갖는 3개의 객체를 쌓아야함.
+      //category접근은 result[0].category
+      //그럼 모든 result배열의 원소에서 중복없는 category값을 뽑아서 배열에 넣어보자
       console.log(obj[o]);
+
     })
+    // let programTitle = Object.keys(obj);
+    // programTitle.forEach(function(o){
+    //   console.log(obj[o]);
+    // })
     res.json(obj);
   })
 })
