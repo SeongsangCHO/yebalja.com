@@ -95,4 +95,83 @@ router.get('/qnas', function(req, res, next){
     res.json(obj);
   })
 })
+router.get('/table', (req, res) => {
+  db.query(`
+    select json_object(
+      'program', title,
+      'link', link,
+      'number_of_recruits', personnel,
+      'edu_period', edu_period,
+      'grant', benefit,
+      'aptitude', badge_aptitude,
+      'coding', badge_coding,
+      'interview', badge_interview,
+      'tryout', badge_tryout)
+    from programs;`, (error, result) => {
+      let arr = [];
+      if (error) throw error;
+      result.map((v) => {
+        let parsed =JSON.parse(Object.values(v));
+        console.log(parsed);
+        //likelion은 테이블에 안쓰이므로 삭제
+        if (parsed.link !== '/likelion'){
+          arr.push(parsed);
+        }
+      })
+    console.log(arr);
+      res.json(arr);
+  })
+});
+
+router.get('/timeline', (req, res) => {
+  db.query(`
+    select substring(link, 2), json_array((
+      json_object(
+        'heading', heading,
+        'subheading', subheading
+        )
+    ))
+    from programs;`, (error, result) => {
+      if (error) throw result;
+      let obj = {};
+      result.map(v => {
+        let dbString = Object.values(v)
+        let key = dbString[0];
+        let value = JSON.parse(dbString[1]);
+        obj[key] = value;
+      })
+      // console.log('obj',obj);
+      res.json(obj);
+  })
+})
+
+router.get('/timelinelist', (req, res) => {
+  db.query(`  select
+    substring(link, 2) as 'program',
+    edu,
+    name,
+    description,
+    start_date as 'startdate',
+    end_date as 'enddate'
+    from steps_timelines
+    inner join gisus on steps_timelines.gisus_id = gisus.id
+    inner join programs on programs.id = gisus.programs_id;`, (error, result) => {
+      if (error) throw error;
+      let obj = {};
+      result.map(v => {
+        //각각의 프로그램이름들('ftseoul'등)이 obj에 없으면 obj['ftseoul']에 빈배열[]을 만듬
+        if (!(v.program in obj)){
+          obj[v.program] = [];
+        }
+        //만들어진 빈배열에 오브젝트 push
+        obj[v.program].push(v);
+        //'ftseoul'같은 프로그램 이름은 obj의 키값으로 적어줬기때문에 v에 있는 'ftseoul'은 삭제
+        delete v['program']
+      })
+      // console.log(obj);
+      res.json(obj);
+  })
+})
+
 module.exports = router;
+
